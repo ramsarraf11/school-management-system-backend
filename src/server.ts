@@ -1,5 +1,7 @@
 import { app } from './app';
 import { initializeDB } from './config/database';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const startServer = async () => {
   try {

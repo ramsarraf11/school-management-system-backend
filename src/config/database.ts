@@ -23,7 +23,7 @@ const createDatabaseIfNotExists = async (): Promise<void> => {
 
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;`);
     console.log(`Database "${DB_NAME}" is ready.`);
-    await connection.end();
+    // await connection.end();
   } catch (error) {
     console.error('Error creating database:', error);
     process.exit(1);
