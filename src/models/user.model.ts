@@ -27,6 +27,12 @@ export default class User extends Model {
   email!: string;
 
   @Column({
+    type: DataType.STRING(50),
+    allowNull: false,
+    })
+  username!: string;
+  
+  @Column({
     type: DataType.STRING(255),
     allowNull: false,
   })

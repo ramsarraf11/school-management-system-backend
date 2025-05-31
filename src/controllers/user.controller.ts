@@ -5,8 +5,8 @@ import { error } from 'node:console';
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, password, roleId } = req.body;
-    const newUser = await registerUserService({ name, email, password, roleId });
+    const { name, email, password, roleId, username } = req.body;
+    const newUser = await registerUserService({ name, email, password, roleId, username });
 
     handleSuccess(res, 'User registered successfully', newUser);
   } catch (error) {

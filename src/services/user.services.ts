@@ -7,9 +7,10 @@ interface RegisterUserInput {
   email: string;
   password: string;
   roleId: number;
+  username: string;
 }
 
-export const registerUserService = async ({ name, email, password, roleId }: RegisterUserInput) => {
+export const registerUserService = async ({ name, email, password, roleId, username }: RegisterUserInput) => {
   // Check if the role exists
   const role = await Role.findOne({ where: { id: roleId } });
   if (!role) {
@@ -25,6 +26,7 @@ export const registerUserService = async ({ name, email, password, roleId }: Reg
     email,
     password: hashedPassword,
     roleId,
+    username
   });
 
   return newUser;

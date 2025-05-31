@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import userRoutes from './routes/user.routes';
 import { globalErrorHandler } from './middlewares/error.middleware';
+import orgRouter from './routes/organization.routes';
 
 const app: Application = express();
 
@@ -14,6 +15,7 @@ app.get('/api/v1/health', (req: Request, res: Response) => {
 });
 
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/organizations', orgRouter);
 
 app.use(globalErrorHandler);
 

@@ -1,28 +1,27 @@
 import bcrypt from 'bcrypt';
 import { generateToken } from '../utils/jwt.util';
-import { findUserByEmail } from '../repositories/user.repository';
-import { createUser } from '../repositories/user.repository';
-import Role from '../models/role.model';
+import { findUserByIdentifier } from '../repositories/user.repository';
 
-
-//////////////////////////////////////////////////////////////
-
-
-export const loginService = async (email: string, password: string): Promise<string> => {
-  // Find the user by email
-  const user = await findUserByEmail(email);
-  if (!user) {
-    throw new Error('Invalid email or password');
+/**
+ * Authenticate a user by username or email and password
+ * @param identifier - The username or email of the user
+ * @param password - The user's password
+ * @returns A JWT token if authentication is successful
+ */
+export const loginService = async (identifier: string, password: string): Promise<any> => {
+  try {
+    const user = await findUserByIdentifier(identifier);
+    if (!user) {
+      throw new Error('Invalid username/email or password');
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new Error('Invalid password');
+    }
+    const token = generateToken({ id: user.id, email: user.email, username: user.username, roleId: user.roleId });
+  
+    return token;
+  } catch (error) {
+    console.error('Error during login:', error);
   }
-
-  // Compare the provided password with the hashed password
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    throw new Error('Invalid email or password');
-  }
-
-  // Generate a JWT token
-  const token = generateToken({ id: user.id, email: user.email, roleId: user.roleId });
-
-  return token;
 };

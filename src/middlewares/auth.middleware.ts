@@ -13,7 +13,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
 
   try {
     const decoded = verifyToken(token); // Verify the token
-    req.user = decoded; // Attach the decoded token payload to the request object
+    //.user = decoded; // Attach the decoded token payload to the request object
     next();
   } catch (error) {
     res.status(401).json({ message: 'Invalid or expired token' });
