@@ -30,7 +30,8 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     const _user = {
       id: user.id,
       email: user.email,
-      organizationId: 100
+      organizationId: 100,
+      roleId: 2
     }
 
     req.user = _user;

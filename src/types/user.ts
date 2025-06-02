@@ -3,4 +3,5 @@ export type DecodedUser = {
   id: number;
   email: string;
   organizationId: number;
+  roleId: number;
 };
