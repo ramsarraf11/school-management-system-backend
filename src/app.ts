@@ -3,6 +3,7 @@ import userRoutes from './routes/user.routes';
 import { globalErrorHandler } from './middlewares/error.middleware';
 import orgRouter from './routes/organization.routes';
 import studentRouter from './routes/student.routes';
+import { authenticate } from './middlewares/auth.middleware';
 
 const app: Application = express();
 
@@ -15,7 +16,9 @@ app.get('/api/v1/health', (req: Request, res: Response) => {
   res.status(200).json({ status: 'OK', message: 'Server is healthy' });
 });
 
+
 app.use('/api/v1/users', userRoutes);
+app.use(authenticate)
 app.use('/api/v1/organizations', orgRouter);
 app.use('/api/v1/students', studentRouter);
 

@@ -13,7 +13,7 @@ import { authenticate } from '../middlewares/auth.middleware';
 const studentRouter = Router();
 
 // Create a new student (only School Admins can onboard students)
-studentRouter.post('/', authenticate, createStudent);
+studentRouter.post('/', authenticate, authorizeSchoolAdmin, createStudent);
 
 // Get all students for the authorizeSchoolAdmind organization
 studentRouter.get('/', authorizeSchoolAdmin, getAllStudents);

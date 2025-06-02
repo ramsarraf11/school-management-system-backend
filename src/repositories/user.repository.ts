@@ -29,3 +29,10 @@ export const findUserByIdentifier = async (identifier: string) => {
       },
     });
 };
+
+export const getUserById = async (id: number) => {
+  return await User.findByPk(id, {
+    attributes: { exclude: ['password'] },
+    include: ['role', 'organization'], // assuming associations are set
+  });
+};
