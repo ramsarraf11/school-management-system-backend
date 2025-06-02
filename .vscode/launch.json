@@ -2,11 +2,18 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "Debug TS Node",
         "type": "node",
         "request": "launch",
+        "name": "Launch Program",
         "runtimeArgs": ["-r", "ts-node/register"],
-        "args": ["${workspaceFolder}/src/server.ts"]
+        "args": ["${workspaceFolder}/src/server.ts"],
+        "cwd": "${workspaceFolder}",
+        "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+        "sourceMaps": true,
+        "envFile": "${workspaceFolder}/.env",
+        "env": {
+          "NODE_ENV": "development"
+        }
       }
     ]
   }

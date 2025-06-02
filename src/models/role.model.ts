@@ -1,6 +1,13 @@
-import { Table, Model, Column, DataType } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  DataType,
+  HasMany,
+  CreatedAt,
+  UpdatedAt,
+} from 'sequelize-typescript';
 import User from './user.model';
-import { HasMany } from 'sequelize-typescript';
 
 @Table({
   tableName: 'roles',
@@ -25,8 +32,9 @@ export default class Role extends Model {
     type: DataType.STRING(255),
     allowNull: true,
   })
-  description!: string | null;
+  description!: string;
 
+  // ✅ One role can have many users
   @HasMany(() => User)
   users!: User[];
 

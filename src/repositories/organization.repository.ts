@@ -22,6 +22,7 @@ export const createOrganization = async (data: Partial<Organization>) => {
       username: username,
       roleId: 2, // Assuming 2 is the role ID for "Admin"
       is_active: true,
+      organizationId: organization.id, // Associate the user with the organization
     });
 
     // Return the organization and the raw password (optional, for admin use)
@@ -53,4 +54,10 @@ export const deleteOrganization = async (id: number) => {
     throw new Error('Organization not found');
   }
   return await organization.destroy();
+};
+
+export const getUsersByOrganization = async (organizationId: number) => {
+  return await User.findAll({
+    where: { organizationId },
+  });
 };

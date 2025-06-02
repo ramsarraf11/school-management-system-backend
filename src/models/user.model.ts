@@ -1,6 +1,7 @@
-import { Table, Model, Column, DataType, Default } from 'sequelize-typescript';
+import { Table, Model, Column, DataType, Default, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import Role from './role.model';
-import { ForeignKey, BelongsTo } from 'sequelize-typescript';
+import Organization from './organization.model';
+
 @Table({
   tableName: 'users',
   timestamps: true, // adds createdAt and updatedAt
@@ -29,9 +30,9 @@ export default class User extends Model {
   @Column({
     type: DataType.STRING(50),
     allowNull: false,
-    })
+  })
   username!: string;
-  
+
   @Column({
     type: DataType.STRING(255),
     allowNull: false,
@@ -59,6 +60,16 @@ export default class User extends Model {
 
   @BelongsTo(() => Role)
   role!: Role;
+
+  @ForeignKey(() => Organization)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  organizationId!: number | null;
+
+  @BelongsTo(() => Organization)
+  organization!: Organization;
 
   createdAt?: Date;
   updatedAt?: Date;

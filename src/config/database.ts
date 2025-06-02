@@ -70,7 +70,7 @@ export const initializeDB = async (): Promise<void> => {
     await sequelize.sync({ alter: true });
     console.log('All models were synchronized successfully.');
 
-    await runSeeders();
+    //await runSeeders();
   } catch (error) {
     console.error('Unable to initialize the database:', error);
     process.exit(1);

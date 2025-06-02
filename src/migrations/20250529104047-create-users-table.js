@@ -30,6 +30,16 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
       },
+      organizationId: {
+        type: Sequelize.INTEGER,
+        allowNull: true, // Allow null for users not tied to an organization
+        references: {
+          model: 'organizations', // Name of the organizations table
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

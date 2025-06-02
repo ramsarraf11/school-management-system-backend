@@ -1,10 +1,26 @@
-import { Table, Model, Column, DataType } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  DataType,
+  HasMany,
+  CreatedAt,
+  UpdatedAt,
+} from 'sequelize-typescript';
+import User from './user.model';
 
 @Table({
   tableName: 'organizations',
   timestamps: true,
 })
 export default class Organization extends Model {
+  @Column({
+    type: DataType.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  })
+  id!: number;
+
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -17,89 +33,47 @@ export default class Organization extends Model {
   })
   name!: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  address!: string;
+  @Column(DataType.STRING)
+  address?: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  phone!: string;
+  @Column(DataType.STRING)
+  phone?: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  email!: string;
+  @Column(DataType.STRING)
+  email?: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  pinCode!: string;
+  @Column(DataType.STRING)
+  pinCode?: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  panNo!: string;
+  @Column(DataType.STRING)
+  panNo?: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  taxNo!: string;
+  @Column(DataType.STRING)
+  taxNo?: string;
 
-  @Column({
-    type: DataType.DATE,
-    allowNull: true,
-  })
-  financialYearStart!: Date;
+  @Column(DataType.DATE)
+  financialYearStart?: Date;
 
-  @Column({
-    type: DataType.DATE,
-    allowNull: true,
-  })
-  financialYearEnd!: Date;
+  @Column(DataType.DATE)
+  financialYearEnd?: Date;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  country!: string;
+  @Column(DataType.STRING)
+  country?: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  state!: string;
+  @Column(DataType.STRING)
+  state?: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  bankName!: string;
+  @Column(DataType.STRING)
+  bankName?: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  accountNumber!: string;
+  @Column(DataType.STRING)
+  accountNumber?: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  branchName!: string;
+  @Column(DataType.STRING)
+  branchName?: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  ifscCode!: string;
+  @Column(DataType.STRING)
+  ifscCode?: string;
 
   @Column({
     type: DataType.BOOLEAN,
@@ -107,4 +81,7 @@ export default class Organization extends Model {
     defaultValue: false,
   })
   enableGST!: boolean;
+
+  @HasMany(() => User)
+  users!: User[];
 }
