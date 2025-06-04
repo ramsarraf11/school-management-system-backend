@@ -6,11 +6,11 @@ import { SequelizeStorage, Umzug } from 'umzug';
 
 dotenv.config();
 
-const DB_HOST = process.env.DB_HOST || 'localhost';
-const DB_PORT = Number(process.env.DB_PORT) || 3306;
-const DB_USER = process.env.DB_USER || 'root';
-const DB_PASSWORD = process.env.DB_PASSWORD || '';
-const DB_NAME = process.env.DB_NAME || 'school_management';
+const DB_HOST = process.env.DB_HOST;
+const DB_PORT = Number(process.env.DB_PORT);
+const DB_USER = process.env.DB_USER;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_NAME = process.env.DB_NAME;
 
 const createDatabaseIfNotExists = async (): Promise<void> => {
   try {
@@ -70,7 +70,7 @@ export const initializeDB = async (): Promise<void> => {
     await sequelize.sync({ alter: true });
     console.log('All models were synchronized successfully.');
 
-    //await runSeeders();
+    await runSeeders();
   } catch (error) {
     console.error('Unable to initialize the database:', error);
     process.exit(1);
