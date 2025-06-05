@@ -12,7 +12,7 @@ const app: Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/api/v1/health', (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response) => {
   res.status(200).json({ status: 'OK', message: 'Server is healthy' });
 });
 
