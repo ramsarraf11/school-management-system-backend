@@ -1,28 +1,25 @@
-import express, { Application, Request, Response } from 'express';
-import userRoutes from './routes/user.routes';
+import express, { Request, Response } from 'express';
 import { globalErrorHandler } from './middlewares/error.middleware';
-import orgRouter from './routes/organization.routes';
-import studentRouter from './routes/student.routes';
-import { authenticate } from './middlewares/auth.middleware';
+import { initializeRoutes } from './routes/indexRoutes';
+import dotenv from 'dotenv';
+import { Logger } from './utils/logger';
+dotenv.config();
 
-const app: Application = express();
+const app = express();
 
+const BASE_URL = process.env.BASE_URL;
+Logger.instance().log('Starting server...');
+console.log('BASE_URL:', BASE_URL);
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req: Request, res: Response) => {
+app.get(`${BASE_URL}/`, (req: Request, res: Response) => {
   res.status(200).json({ status: 'OK', message: 'Server is healthy' });
 });
 
-
-app.use('/api/v1/users', userRoutes);
-app.use(authenticate)
-app.use('/api/v1/organizations', orgRouter);
-app.use('/api/v1/students', studentRouter);
+initializeRoutes(app, BASE_URL);
 
 app.use(globalErrorHandler);
-
 
 export { app };
