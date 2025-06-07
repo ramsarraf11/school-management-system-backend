@@ -5,6 +5,7 @@ import {
     updateOrganization,
     deleteOrganization,
   } from '../repositories/organization.repository';
+import { Logger } from '../utils/logger';
   
   export const createOrganizationService = async (data: any) => {
     const result = await createOrganization(data);
@@ -14,7 +15,7 @@ import {
     }
   
     const { organization, adminCredentials } = result;
-    console.log('Admin Credentials:', adminCredentials);
+    Logger.instance().log(`School Admin Credentials:, ${adminCredentials}`);
     return organization;
   };
   

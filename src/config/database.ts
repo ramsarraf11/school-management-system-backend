@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import mysql from 'mysql2/promise';
 import { SequelizeStorage, Umzug } from 'umzug';
+import { Logger } from '../utils/logger';
 
 dotenv.config();
 
@@ -22,8 +23,8 @@ const createDatabaseIfNotExists = async (): Promise<void> => {
     });
 
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;`);
-    console.log(`Database "${DB_NAME}" is ready.`);
-    // await connection.end();
+    Logger.instance().log(`Database "${DB_NAME}" is ready.`);
+    await connection.end();
   } catch (error) {
     console.error('Error creating database:', error);
     process.exit(1);
@@ -53,7 +54,7 @@ const runSeeders = async (): Promise<void> => {
     });
   
     await seeder.up();
-    console.log('Seeders executed successfully.');
+    Logger.instance().log('Seeders executed successfully.');
   } catch (error) {
     console.error('Error running seeders:', error);
     process.exit(1);
@@ -65,10 +66,10 @@ export const initializeDB = async (): Promise<void> => {
     await createDatabaseIfNotExists();
 
     await sequelize.authenticate();
-    console.log('Database connection has been established successfully.');
+    Logger.instance().log('Database connection has been established successfully.');
 
     await sequelize.sync({ alter: true });
-    console.log('All models were synchronized successfully.');
+    Logger.instance().log('All models were synchronized successfully.');
 
     await runSeeders();
   } catch (error) {

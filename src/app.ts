@@ -9,7 +9,7 @@ const app = express();
 
 const BASE_URL = process.env.BASE_URL;
 Logger.instance().log('Starting server...');
-console.log('BASE_URL:', BASE_URL);
+Logger.instance().log(`BASE_URL:, ${BASE_URL}`);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
