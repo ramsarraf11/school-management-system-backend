@@ -1,26 +1,30 @@
 import Organization from '../models/organization.model';
-import User from '../models/user.model'; // Import the User model
-import { generateUsername, generatePassword } from '../utils/info.generation'; // Import the utility functions
+import User from '../models/user.model';
+import { generateUsername, generatePassword } from '../utils/info.generation';
 import bcrypt from 'bcrypt';
-import { handleError } from '../utils/response.util';
+import { Logger } from '../utils/logger';
 
+/**
+ * Create a new organization and its admin user.
+ * @param data - Partial organization data
+ * @returns The created organization and admin credentials
+ */
 export const createOrganization = async (data: Partial<Organization>) => {
   try {
-    // Create the organization
     const organization = await Organization.create(data);
 
-    // Generate a username and password for the organization admin
-    const username = generateUsername(data.name || 'organization');
+    const username = generateUsername(data.orgName || 'organization');
     const rawPassword = generatePassword();
     const hashedPassword = await bcrypt.hash(rawPassword, 10);
 
-    // Store the generated credentials in the User table
+    Logger.instance().log(`Credentials for organization ${organization.orgName}: Username: ${username}, Password: ${rawPassword}`);
+
     await User.create({
-      name: data.name || 'Organization Admin',
-      email: data.email || `${username}@example.com`, // Use the organization's email or a placeholder
+      name: data.ownerName,
+      email: data.email,
       password: hashedPassword,
       username: username,
-      roleId: 2, // Assuming 2 is the role ID for "Admin"
+      roleId: 2, // for school admins
       is_active: true,
       organizationId: organization.id, // Associate the user with the organization
     });
@@ -29,17 +33,37 @@ export const createOrganization = async (data: Partial<Organization>) => {
     return { organization, adminCredentials: { username, password: rawPassword } };
   } catch (error) {
     console.error('Error creating organization:', error);
+    throw error;
   }
 };
 
+/**
+ * Get all organizations.
+ * @returns A list of all organizations
+ */
 export const getAllOrganizations = async () => {
-  return await Organization.findAll();
+  return await Organization.findAll({
+    include: [User], // Include associated users
+  });
 };
 
+/**
+ * Get an organization by its ID.
+ * @param id - Organization ID
+ * @returns The organization if found
+ */
 export const getOrganizationById = async (id: number) => {
-  return await Organization.findByPk(id);
+  return await Organization.findByPk(id, {
+    include: [User], // Include associated users
+  });
 };
 
+/**
+ * Update an organization by its ID.
+ * @param id - Organization ID
+ * @param data - Partial organization data to update
+ * @returns The updated organization
+ */
 export const updateOrganization = async (id: number, data: Partial<Organization>) => {
   const organization = await Organization.findByPk(id);
   if (!organization) {
@@ -48,6 +72,11 @@ export const updateOrganization = async (id: number, data: Partial<Organization>
   return await organization.update(data);
 };
 
+/**
+ * Delete an organization by its ID.
+ * @param id - Organization ID
+ * @returns The result of the deletion
+ */
 export const deleteOrganization = async (id: number) => {
   const organization = await Organization.findByPk(id);
   if (!organization) {
@@ -56,8 +85,25 @@ export const deleteOrganization = async (id: number) => {
   return await organization.destroy();
 };
 
+/**
+ * Get all users associated with a specific organization.
+ * @param organizationId - Organization ID
+ * @returns A list of users belonging to the organization
+ */
 export const getUsersByOrganization = async (organizationId: number) => {
   return await User.findAll({
     where: { organizationId },
   });
 };
+
+// get by email
+export const getOrganizationByEmail = async (email: string) => {
+  return await Organization.findOne({
+    where: { email },
+  });
+}
+/**
+ * Get an organization by its email.
+ * @param email - Organization email
+ * @returns The organization if found
+ */

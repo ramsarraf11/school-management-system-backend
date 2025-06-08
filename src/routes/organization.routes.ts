@@ -6,14 +6,14 @@ import {
   updateOrganization,
   deleteOrganization,
 } from '../controllers/organization.controller';
-import {  } from '../middlewares/auth.middleware';
+import { authenticate } from '../middlewares/auth.middleware';
 
 const orgRouter = Router();
 
-orgRouter.post('/',  createOrganization);
-orgRouter.get('/',  getAllOrganizations);
-orgRouter.get('/:id',  getOrganizationById);
-orgRouter.put('/:id',  updateOrganization);
-orgRouter.delete('/:id',  deleteOrganization);
+orgRouter.post('/', authenticate, createOrganization);
+orgRouter.get('/', authenticate, getAllOrganizations);
+orgRouter.get('/:id', authenticate, getOrganizationById);
+orgRouter.put('/:id', authenticate, updateOrganization);
+orgRouter.delete('/:id', authenticate, deleteOrganization);
 
 export default orgRouter;

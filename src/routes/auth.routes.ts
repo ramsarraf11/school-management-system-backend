@@ -1,4 +1,4 @@
-import { validateLogin, validateRegistration } from '../validators/auth.validators';
+import { validateLogin } from '../validators/auth.validators';
 import { login } from '../controllers/auth.controller';
 import express from "express";
 

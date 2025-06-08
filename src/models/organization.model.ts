@@ -25,13 +25,13 @@ export default class Organization extends Model {
     type: DataType.STRING,
     allowNull: false,
   })
-  orglName!: string;
+  orgName!: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  name!: string;
+  ownerName!: string;
 
   @Column(DataType.STRING)
   address?: string;

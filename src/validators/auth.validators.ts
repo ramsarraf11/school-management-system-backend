@@ -1,24 +1,25 @@
 import { Request, Response, NextFunction } from 'express';
+import Joi from 'joi';
 
-export const validateLogin = (req: Request, res: Response, next: NextFunction): void => {
-  const { username, email, password } = req.body;
+const loginSchema = Joi.object({
+  email: Joi.string().optional().messages({
+    'string.empty': 'Email is required.',
+  }),
+  username: Joi.string().optional().messages({
+    'string.empty': 'Username is required.',
+  }),
+  password: Joi.string().min(8).required().messages({
+    'string.empty': 'Password is required.',
+  }),
+});
 
-  if (!username && !email || !password) {
-    res.status(400).json({ message: 'Email or Username and password are required.' });
+export const validateLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const { error } = loginSchema.validate(req.body, { abortEarly: false });
+
+  if (error) {
+    const errorMessages = error.details.map((detail) => detail.message);
+    res.status(400).json({ message: 'Validation failed', errors: errorMessages });
     return;
   }
-
   next();
-};
-
-export const validateRegistration = (req: Request, res: Response, next: NextFunction): void => {
-    const { name, email, password, roleId } = req.body;
-  
-    if (!name || !email || !password || !roleId) {
-      res.status(400).json({ message: 'Name, email, password, and roleId are required.' });
-      return;
-    }
-  
-    // Additional validation (e.g., email format, password strength) can be added here
-    next();
-  };
+}
