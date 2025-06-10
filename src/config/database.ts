@@ -13,6 +13,17 @@ const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const DB_NAME = process.env.DB_NAME;
 
+const sequelize = new Sequelize({
+  dialect: 'mysql',
+  host: DB_HOST,
+  port: DB_PORT,
+  username: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_NAME,
+  models: [path.resolve(__dirname, '../models')],
+  logging: false,
+});
+
 const createDatabaseIfNotExists = async (): Promise<void> => {
   try {
     const connection = await mysql.createConnection({
@@ -31,17 +42,6 @@ const createDatabaseIfNotExists = async (): Promise<void> => {
   }
 };
 
-const sequelize = new Sequelize({
-  dialect: 'mysql',
-  host: DB_HOST,
-  port: DB_PORT,
-  username: DB_USER,
-  password: DB_PASSWORD,
-  database: DB_NAME,
-  models: [path.resolve(__dirname, '../models')],
-  logging: false,
-});
-
 // Function to run seeders
 const runSeeders = async (): Promise<void> => {
 
@@ -52,7 +52,7 @@ const runSeeders = async (): Promise<void> => {
       storage: new SequelizeStorage({ sequelize, tableName: 'SequelizeSeeders' }),
       logger: console,
     });
-  
+
     await seeder.up();
     Logger.instance().log('Seeders executed successfully.');
   } catch (error) {
@@ -73,7 +73,7 @@ export const initializeDB = async (): Promise<void> => {
 
     await runSeeders();
   } catch (error) {
-    console.error('Unable to initialize the database:', error);
+    Logger.instance().log(`Unable to initialize the database: ${error}`);
     process.exit(1);
   }
 };

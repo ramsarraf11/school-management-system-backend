@@ -4,6 +4,7 @@ import organizationRoutes from './organization.routes';
 import authRoutes from './auth.routes';
 import userRoutes from './user.routes';
 import { authenticate } from '../middlewares/auth.middleware';
+import employeeRoutes from './employee.routes';
 
 const router = Router();
 
@@ -19,6 +20,7 @@ export const initializeRoutes = (app: any, baseUrl: any): void => {
     app.use(`${baseUrl}/students`, studentRoutes);
     app.use(`${baseUrl}/organizations`, organizationRoutes);
     app.use(`${baseUrl}/users`, userRoutes);
+    app.use(`${baseUrl}/employee`, employeeRoutes);
 };
 
 export default router;
