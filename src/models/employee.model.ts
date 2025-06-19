@@ -8,6 +8,7 @@ import {
     Default,
 } from 'sequelize-typescript';
 import Organization from './organization.model';
+import Shift from './shift.model';
 
 @Table({
     tableName: 'employees',
@@ -66,8 +67,12 @@ export default class Employee extends Model {
     @Column({ type: DataType.STRING, allowNull: true })
     education?: string;
 
-    @Column({ type: DataType.STRING, allowNull: true })
-    assignShift?: string;
+    @ForeignKey(() => Shift)
+    @Column({ type: DataType.INTEGER, allowNull: true })
+    shiftId!: number | null; // Foreign key to the Shift model
+
+    @BelongsTo(() => Shift)
+    shift!: Shift; // Association to fetch the shift assigned to the employee
 
     @Column({ type: DataType.TEXT, allowNull: true })
     address?: string;

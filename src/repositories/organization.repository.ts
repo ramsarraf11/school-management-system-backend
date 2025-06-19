@@ -1,3 +1,4 @@
+import { Transaction } from 'sequelize';
 import Organization from '../models/organization.model';
 import User from '../models/user.model';
 import { generateUsername, generatePassword } from '../utils/info.generation';
@@ -10,8 +11,10 @@ import { Logger } from '../utils/logger';
  * @returns The created organization and admin credentials
  */
 export const createOrganization = async (data: Partial<Organization>) => {
+  const transaction = await Organization.sequelize?.transaction();
   try {
-    const organization = await Organization.create(data);
+
+    const organization = await Organization.create(data, { transaction });
 
     const username = generateUsername(data.orgName || 'organization');
     const rawPassword = generatePassword();
@@ -26,12 +29,16 @@ export const createOrganization = async (data: Partial<Organization>) => {
       username: username,
       roleId: 2, // for school admins
       is_active: true,
-      organizationId: organization.id, // Associate the user with the organization
-    });
+      organizationId: organization.id, // Associate the admin with the organization
+    },
+      { transaction }
+    );
+    await transaction?.commit();
 
     // Return the organization and the raw password (optional, for admin use)
     return { organization, adminCredentials: { username, password: rawPassword } };
   } catch (error) {
+    await transaction?.rollback();
     console.error('Error creating organization:', error);
     throw error;
   }

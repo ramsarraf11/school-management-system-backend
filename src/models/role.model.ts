@@ -8,6 +8,7 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import User from './user.model';
+import RolePermission from './role.permission.model';
 
 @Table({
   tableName: 'roles',
@@ -37,6 +38,9 @@ export default class Role extends Model {
   // ✅ One role can have many users
   @HasMany(() => User)
   users!: User[];
+
+  @HasMany(() => RolePermission)
+  rolePermissions!: RolePermission[];
 
   createdAt?: Date;
   updatedAt?: Date;

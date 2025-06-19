@@ -5,6 +5,7 @@ import {
   updateEmployee,
   deleteEmployee,
   searchEmployees,
+  getEmployeeByRoleOrName
 } from '../controllers/employee.controller';
 import { authenticate } from '../middlewares/auth.middleware';
 import { authorizeSchoolAdmin } from '../middlewares/role.middleware';
@@ -16,5 +17,8 @@ employeeRoutes.get('/:id', authenticate, authorizeSchoolAdmin, getEmployeeById);
 employeeRoutes.put('/:id', authenticate, authorizeSchoolAdmin, updateEmployee);
 employeeRoutes.delete('/:id', authenticate, authorizeSchoolAdmin, deleteEmployee);
 employeeRoutes.get('/', authenticate, authorizeSchoolAdmin, searchEmployees);
+
+// search by roleId or name 
+employeeRoutes.get('/search', authenticate, authorizeSchoolAdmin, getEmployeeByRoleOrName);
 
 export default employeeRoutes;

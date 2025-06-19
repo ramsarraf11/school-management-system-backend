@@ -8,6 +8,7 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import User from './user.model';
+import Department from './department.model';
 
 @Table({
   tableName: 'organizations',
@@ -84,4 +85,13 @@ export default class Organization extends Model {
 
   @HasMany(() => User)
   users!: User[];
+
+  @HasMany(() => Department)
+  departments!: Department[];
+
+  @CreatedAt
+  createdAt?: Date;
+
+  @UpdatedAt
+  updatedAt?: Date;
 }

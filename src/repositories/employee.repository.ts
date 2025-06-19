@@ -20,7 +20,7 @@ export const deleteEmployee = async (id: number) => {
   return await employee.destroy();
 };
 
-export const searchEmployees = async (query: Partial<Employee>) => {
+export const searchEmployees = async (query: any) => {
   return await Employee.findAll({
     where: query,
   });
